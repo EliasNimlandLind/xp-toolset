@@ -1,6 +1,6 @@
 # xp-toolset
 ## Introduction
-This repository contains scripts used in a local organization called XP Ängelholm. 
+This repository is a collection of scripts used in a local organization called XP Ängelholm. 
 
 ## Tools
 ### discord-user-removal
