@@ -6,6 +6,7 @@ This repository is a collection of simple scripts used in a local organization c
 ### Automatic logout
 These scripts are designed to be executed during startup and deletes user information to forcefully logout users of applications not affected by a similar process done by ggLeap.
 
-## What files to add to new computers
-Add the following files in this order to the directory opened by pressing 'Windows key' and 'R' simultaneously.
-1. The files in the automatic logout directory.
+## Setting up new computers 
+1. Download all files by pressing the green button with the text *Code* and press *Download as Zip*.
+2. Press 'Windows key' and 'R' simultaneously to open the Run dialog. Type 'shell:Startup' in the dialog.
+3. Copy the files in *automatic-logout* to the previous opened folder. **Important** copy each separately and **not** the whole folder.
