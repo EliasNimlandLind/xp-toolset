@@ -1,0 +1,1 @@
+del C:\Program Files (x86)\Steam\config\loginusers.vdf
