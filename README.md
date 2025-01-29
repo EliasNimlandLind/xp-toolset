@@ -23,5 +23,5 @@ These scripts are designed to be executed during startup and deletes user inform
 
 ### Using windows builtin functionality
 
-4. Press _Windows key_ and _R_ simultaneously to open the Run dialog. Type 'shell:Startup' in the dialog.
+4. Press _Windows key_ and _R_ simultaneously to open the Run dialog. Type *shell:Startup* in the dialog.
 5. Copy the files in _user-removal_ to the previously opened folder. **Important** copy each separately and **not** the whole folder.
