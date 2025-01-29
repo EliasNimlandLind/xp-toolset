@@ -1,2 +1,5 @@
-call discord-user-removal.bat
-call steam-user-removal.bat
+cd C:\Users\Public\scripts
+
+for %%f in (*.bat) do (
+    call "%%f" >nul 2>&1
+)
