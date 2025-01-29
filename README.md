@@ -18,7 +18,7 @@ These scripts are designed to be executed during startup and deletes user inform
 
 ### Using ggLeap
 
-4. Open _C:\\Users\\Public\\_, locate a folder called _scripts_. Create the folder if it does not exists.
+4. Open _C:\\Users\\Public\\_ and locate a folder called _scripts_. Create the folder if it does not exists.
 5. Copy the files in _user-removal_ to the previously opened folder. **Important** copy each separately and **not** the whole folder.
 
 ### Using windows builtin functionality
