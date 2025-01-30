@@ -1,14 +1,25 @@
 # Copy BAT files to distribution
+function Copy-WithOverwrite {
+    param (
+        [string]$sourcePath,
+        [string]$destinationPath
+    )
 
-$sourcePathUserRemoval = "user-removal"
-$distributionPathUserRemoval = "distribution/" + $sourcePathUserRemoval 
+    # Remove the destination if it exists
+    if (Test-Path -Path $destinationPath) {
+        Remove-Item -Path $destinationPath -Recurse -Force
+        Write-Host "Removed existing directory: $destinationPath"
+    }
 
-Copy-Item -Path $sourcePathUserRemoval -Destination $distributionPathUserRemoval -Recurse
+    # Copy the source to the destination
+    Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse
+    Write-Host "Copied $sourcePath to $destinationPath"
+}
 
-$sourcePathInstallerScripts = "installer-scripts"
-$distributionPathInstallerScripts = "distribution/" + $sourcePathInstallerScripts 
-
-Copy-Item -Path $sourcePathInstallerScripts -Destination $distributionPathInstallerScripts -Recurse
+$distributionPath = "distribution"
+# Define paths and call the function
+Copy-WithOverwrite -sourcePath "user-removal" -destinationPath "$distributionPath/user-removal"
+Copy-WithOverwrite -sourcePath "installer-scripts" -destinationPath "$distributionPath/installer-scripts"
 
 # Create an EXE file based on main-installer.ps1
 Invoke-Expression "ps2exe main-installer.ps1 distribution/main-installer.exe -noConsole"
