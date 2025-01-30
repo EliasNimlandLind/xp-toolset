@@ -23,10 +23,12 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 3. Execute `build.ps1`.
 4. The files are found in _distribution_.
 
-### Installing
+### Installing and dowloading
+
+#### Downloading
 
 1. Start the computer in administrator mode.
-2. Go to [the download page](https://github.com/EliasNimlandLind/xp-toolset/releases/).
+2. Go to [the page containing releases](https://github.com/EliasNimlandLind/xp-toolset/releases/).
 3. Click on _distribution.zip_ under _Assets_ to start the download. Choose the latest version.
 4. Extract the ZIP file.
 5. Open the resulting folder.

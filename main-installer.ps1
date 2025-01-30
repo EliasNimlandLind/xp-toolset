@@ -15,8 +15,7 @@ foreach ($script in $scripts) {
         Write-Host "Completed script: $($script.FullName)"
     }
     catch {
-        Write-Host "Error running script: $($script.FullName)"
-        Write-Host "Error details: $_"
+        Write-Host "Error running script: $($script.FullName) Error details: $_"
     }
     Pause
 }

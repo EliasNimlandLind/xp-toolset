@@ -1,5 +1,5 @@
 # Define the source and destination directories
-$sourceDirectory = ".\user-removal"
+$sourceDirectory = "..\user-removal"
 $destinationDirectory = "C:\Users\Public\scripts"
 
 # Check if destination directory exists, if not create it
