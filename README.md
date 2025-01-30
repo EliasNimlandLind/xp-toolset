@@ -26,15 +26,16 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 ### Installing
 
 1. Start the computer in administrator mode.
-2. Download all files by pressing the green button with the text _Code_ and press _Download as Zip_.
-3. Extract the ZIP file.
-4. Open the resulting folder.
+2. Go to [the download page](https://github.com/EliasNimlandLind/xp-toolset/releases/).
+3. Click on _distribution.zip_ to start the download.
+4. Extract the ZIP file.
+5. Open the resulting folder.
 
-#### Installing using main installer
+#### Installing using the main installer
 
-5. Click on _main-installer.exe_.
+6. Click on _main-installer.exe_.
 
 #### Installing each script seperately
 
-5. Open _installer-scripts_.
-6. Click on each file seperately.
+6. Open _installer-scripts_.
+7. Click on each file seperately.
