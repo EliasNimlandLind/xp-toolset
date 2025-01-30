@@ -14,18 +14,27 @@ These scripts are designed to be executed during startup and deletes user inform
 
 The scripts found in _installer-scripts_ are used to simplify the install process for the other scripts. A seperate folder is used instead of dividing the install scripts based on usage to simplify the main install script.
 
-## Main installer
+## Preparing files and installing
 
-### Create an exe file from the ps1 file
+### Building files
 
 1. Open PowerShell in the root folder.
 2. Execute `Install-Module -Name ps2exe -Force`.
-3. Execute `ps2exe .\main-installer.ps1 .\main-installer.exe`
+3. Execute `build.ps1`.
+4. The files are found in _distribution_.
 
-### Installing using main installer
+### Installing
 
 1. Start the computer in administrator mode.
 2. Download all files by pressing the green button with the text _Code_ and press _Download as Zip_.
 3. Extract the ZIP file.
 4. Open the resulting folder.
+
+#### Installing using main installer
+
 5. Click on _main-installer.exe_.
+
+#### Installing each script seperately
+
+5. Open _installer-scripts_.
+6. Click on each file seperately.

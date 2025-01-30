@@ -15,5 +15,3 @@ foreach ($file in $files) {
     $destinationPath = Join-Path -Path $destinationDirectory -ChildPath $file.Name
     Copy-Item -Path $file.FullName -Destination $destinationPath -Force
 }
-
-Pause
