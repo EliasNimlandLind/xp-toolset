@@ -16,8 +16,8 @@ foreach ($user in $users) {
         # Get all image files in the AccountPictures folder
         $profilePictures = Get-ChildItem -Path $profilePicturePath -File
 
-        foreach ($pic in $profilePictures) {
-            Remove-Item -Path $pic.FullName -Force
+        foreach ($profilePicture in $profilePictures) {
+            Remove-Item -Path $profilePicture.FullName -Force
             Write-Host "Removed profile picture for user: $username"
         }
     }
