@@ -46,7 +46,7 @@ jobs:
           VERSION_UPDATE_TYPE="patch"
 
           # Check if commit message contains "major", "minor", or "patch"
-          if [[ "$COMMIT_MSG" == *"major"* ]]; then
+          if [[ "$COMMIT_MSG" == *"major"* || "$COMMIT_MSG" == *"BREAKING CHANGE"* ]]; then
             VERSION_UPDATE_TYPE="major"
           elif [[ "$COMMIT_MSG" == *"minor"* ]]; then
             VERSION_UPDATE_TYPE="minor"
@@ -60,9 +60,11 @@ jobs:
         run: |
           VERSION=${{ env.VERSION }}
           IFS='.' read -r -a VERSION_PARTS <<< "$VERSION"
-          MAJOR=${VERSION_PARTS[0]}
-          MINOR=${VERSION_PARTS[1]}
-          PATCH=${VERSION_PARTS[2]}
+
+          # Ensure version parts are correctly split
+          MAJOR=${VERSION_PARTS[0]:-0}
+          MINOR=${VERSION_PARTS[1]:-0}
+          PATCH=${VERSION_PARTS[2]:-0}
 
           case "${{ env.VERSION_UPDATE_TYPE }}" in
             "major")
@@ -98,4 +100,3 @@ jobs:
           gh release create "v${{ env.NEW_VERSION }}" --title "Release v${{ env.NEW_VERSION }}" --notes "Release created from push to main"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
