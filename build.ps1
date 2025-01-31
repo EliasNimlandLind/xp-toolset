@@ -18,7 +18,7 @@ function CopyWithOverwrite {
 
 $distributionPath = "distribution"
 # Define paths and call the function
-CopyWithOverwrite -sourcePath "user-removal" -destinationPath "$distributionPath/user-removal"
+CopyWithOverwrite -sourcePath "scripts/user-removal" -destinationPath "$distributionPath/user-removal"
 CopyWithOverwrite -sourcePath "installer-scripts" -destinationPath "$distributionPath/installer-scripts"
 
 # Create an EXE file based on main-installer.ps1
