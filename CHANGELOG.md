@@ -1,6 +1,6 @@
 ## Changelog
 
-### v0.0.2
+### v9.0.0
 
-747b267 Update version to 0.0.2
-41f11b5 minor
+c5fa998 Update version to 9.0.0
+e53198e major
