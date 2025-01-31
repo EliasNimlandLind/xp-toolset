@@ -27,7 +27,7 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 3. Execute `build.ps1`.
 4. The files are found in _distribution_.
 
-### Installing and dowloading
+### Downloading and installing
 
 #### Downloading
 
