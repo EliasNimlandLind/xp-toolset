@@ -48,4 +48,4 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 
 ## TODO
 
-- Extend build script to include executable files to all bat files.
+- Extend build script to include executable files to all files by converting .bat files to .ps1.
