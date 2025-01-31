@@ -12,16 +12,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures full history is available
 
       - name: Install jq
-        run: sudo apt-get install -y jq
+        run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Get latest commit message
         id: commit-message
         run: echo "COMMIT_MSG=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
       - name: Check if commit contains "release:"
-        if: "!contains(env.COMMIT_MSG, 'release:')"
+        if: "!contains(steps.commit-message.outputs.COMMIT_MSG, 'release:')"
         run: |
           echo "No 'release:' keyword found in commit message. Skipping release."
           exit 1
@@ -60,19 +62,12 @@ jobs:
         id: commit-messages
         run: |
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-          COMMIT_MESSAGES=$(git log $LAST_TAG..HEAD --pretty=format:"- %s" | tr '\n' ' ')
-          echo "COMMIT_MESSAGES=$COMMIT_MESSAGES" >> $GITHUB_ENV
-
-      - name: Generate Release Notes
-        id: release-notes
-        run: |
-          RELEASE_NOTES="### Changes in v${{ env.NEW_VERSION }}:\n\n${{ env.COMMIT_MESSAGES }}\n\n"
-          echo "$RELEASE_NOTES" >> $GITHUB_ENV
+          git log $LAST_TAG..HEAD --pretty=format:"- %s" > commit_messages.txt
 
       - name: Update CHANGELOG.md
         run: |
           DATE=$(date +'%Y-%m-%d')
-          echo -e "## [${{ env.NEW_VERSION }}] - $DATE\n${{ env.COMMIT_MESSAGES }}\n\n$(cat CHANGELOG.md)" > CHANGELOG.md
+          echo -e "## [${{ env.NEW_VERSION }}] - $DATE\n$(cat commit_messages.txt)\n\n$(cat CHANGELOG.md)" > CHANGELOG.md
 
       - name: Commit updated files
         run: |
@@ -97,7 +92,7 @@ jobs:
         with:
           tag_name: v${{ env.NEW_VERSION }}
           release_name: v${{ env.NEW_VERSION }}
-          body: ${{ env.RELEASE_NOTES }}
+          body_path: commit_messages.txt  # Use file instead of env variable
           draft: false
           prerelease: false
 
