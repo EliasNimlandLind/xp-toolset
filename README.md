@@ -47,4 +47,5 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 7. Click on each file seperately.
 
 ## TODO
-- Extend installers to create all necessary paths. 
+
+- Extend installers to create all necessary paths.
