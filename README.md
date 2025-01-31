@@ -45,3 +45,7 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 
 6. Open _installer-scripts_.
 7. Click on each file seperately.
+
+## TODO
+
+- Extend build script to include executable files to all bat files.
