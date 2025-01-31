@@ -128,7 +128,7 @@ jobs:
 
       - name: Zip the distribution folder
         run: |
-          zip -r distribution-${{ env.NEW_VERSION }}.zip distribution/
+          zip -r distribution-${{ env.NEW_VERSION }}.zip distribution/*
           echo "Zipped distribution folder to distribution-${{ env.NEW_VERSION }}.zip"
 
       - name: Create GitHub release with zipped distribution
