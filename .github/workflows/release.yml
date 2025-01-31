@@ -113,12 +113,19 @@ jobs:
           echo "Generated changelog:"
           echo "$CHANGELOG"
 
-          # Save changelog to an environment variable
-          echo "CHANGELOG=$CHANGELOG" >> $GITHUB_ENV
+          # Write changelog to a CHANGELOG.md file
+          echo "## Changelog" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "### v${{ env.NEW_VERSION }}" >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "$CHANGELOG" >> CHANGELOG.md
+          git add CHANGELOG.md
+          git commit -m "Add changelog for v${{ env.NEW_VERSION }}"
+          git push
 
       - name: Create GitHub release
         id: create_release
         run: |
-          gh release create "v${{ env.NEW_VERSION }}" --title "Release v${{ env.NEW_VERSION }}" --notes "${{ env.CHANGELOG }}"
+          gh release create "v${{ env.NEW_VERSION }}" --title "Release v${{ env.NEW_VERSION }}" --notes "$(cat CHANGELOG.md)"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
