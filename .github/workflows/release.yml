@@ -129,11 +129,11 @@ jobs:
       - name: Zip the distribution folder
         run: |
           zip -r distribution-${{ env.NEW_VERSION }}.zip distribution/
-          echo "Zipped scripts folder to scripts-${{ env.NEW_VERSION }}.zip"
+          echo "Zipped distribution folder to distribution-${{ env.NEW_VERSION }}.zip"
 
-      - name: Create GitHub release with zipped scripts
+      - name: Create GitHub release with zipped distribution
         id: create_release
         run: |
-          gh release create "v${{ env.NEW_VERSION }}" --title "Release v${{ env.NEW_VERSION }}" --notes "$(cat CHANGELOG.md)" "scripts-${{ env.NEW_VERSION }}.zip"
+          gh release create "v${{ env.NEW_VERSION }}" --title "Release v${{ env.NEW_VERSION }}" --notes "$(cat CHANGELOG.md)" "distribution-${{ env.NEW_VERSION }}.zip"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
