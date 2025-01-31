@@ -1,7 +1,7 @@
 $scriptDir = $PSScriptRoot
 # Define the source and destination directories
-$sourceDirectory = "$scriptDir\..\scripts\user-removal"
-$destinationDirectory = "C:\Users\Public\scripts\ExecuteOnStartup"
+$sourceDirectory = "$scriptDir\..\scripts\windows-profile-picture-removal"
+$destinationDirectory = "C:\Users\Public\scripts\ExecuteOnOther"
 
 # Check if destination directory exists, if not create it
 if (-not (Test-Path $destinationDirectory)) {

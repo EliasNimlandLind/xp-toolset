@@ -10,9 +10,13 @@ This repository is a collection of simple scripts used in a local organization c
 
 These scripts are designed to be executed during startup and deletes user information to forcefully logout users of applications not affected by a similar process done by ggLeap.
 
+### windows-profile-picture-removal
+
+_windows-profile-picture-removal_ can be used to quickly remove profile pictures from computers with pictures due to people logging into Windows and Microsoft.
+
 ### installer-scripts
 
-The scripts found in _installer-scripts_ are used to simplify the install process for the other scripts. A seperate folder is used instead of dividing the install scripts based on usage to simplify the main install script.
+The scripts found in _installer-scripts_ are used to simplify the install process for the other scripts. A seperate folder is used instead of dividing the install scripts based on usage to simplify the main install script as well as enabling individual download.
 
 ## Preparing files and installing
 
