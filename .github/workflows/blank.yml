@@ -1,0 +1,112 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Get latest commit message
+        id: commit-message
+        run: echo "COMMIT_MSG=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+
+      - name: Check if commit contains "release:"
+        if: "!contains(env.COMMIT_MSG, 'release:')"
+        run: |
+          echo "No 'release:' keyword found in commit message. Skipping release."
+          exit 1
+
+      - name: Read current version from release.json
+        id: version
+        run: |
+          CURRENT_VERSION=$(jq -r .version release.json)
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
+
+      - name: Determine version increment type
+        id: version-type
+        run: |
+          if git log -1 --pretty=%B | grep -q 'BREAKING CHANGE:'; then
+            echo "VERSION_TYPE=major" >> $GITHUB_ENV
+          elif git log -1 --pretty=%B | grep -q 'feat:'; then
+            echo "VERSION_TYPE=minor" >> $GITHUB_ENV
+          else
+            echo "VERSION_TYPE=patch" >> $GITHUB_ENV
+          fi
+
+      - name: Auto-increment version
+        id: new_version
+        run: |
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+          case "${{ env.VERSION_TYPE }}" in
+            major) ((MAJOR+=1)); MINOR=0; PATCH=0 ;;
+            minor) ((MINOR+=1)); PATCH=0 ;;
+            patch) ((PATCH+=1)) ;;
+          esac
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          jq --arg new_version "$NEW_VERSION" '.version = $new_version' release.json > temp.json && mv temp.json release.json
+
+      - name: Get commit messages since last release
+        id: commit-messages
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          COMMIT_MESSAGES=$(git log $LAST_TAG..HEAD --pretty=format:"- %s" | tr '\n' ' ')
+          echo "COMMIT_MESSAGES=$COMMIT_MESSAGES" >> $GITHUB_ENV
+
+      - name: Generate Release Notes
+        id: release-notes
+        run: |
+          RELEASE_NOTES="### Changes in v${{ env.NEW_VERSION }}:\n\n${{ env.COMMIT_MESSAGES }}\n\n"
+          echo "$RELEASE_NOTES" >> $GITHUB_ENV
+
+      - name: Update CHANGELOG.md
+        run: |
+          DATE=$(date +'%Y-%m-%d')
+          echo -e "## [${{ env.NEW_VERSION }}] - $DATE\n${{ env.COMMIT_MESSAGES }}\n\n$(cat CHANGELOG.md)" > CHANGELOG.md
+
+      - name: Commit updated files
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add release.json CHANGELOG.md
+          git commit -m "Bump version to ${{ env.NEW_VERSION }} and update changelog"
+          git push origin main
+
+      - name: Create a ZIP file of the necessary files
+        run: |
+          mkdir release
+          cp -r *.bat *.ps1 release/ 2>/dev/null || true
+          cp release.json CHANGELOG.md README.md release/ 2>/dev/null || true
+          zip -r release-v${{ env.NEW_VERSION }}.zip release
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.NEW_VERSION }}
+          release_name: v${{ env.NEW_VERSION }}
+          body: ${{ env.RELEASE_NOTES }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release-v${{ env.NEW_VERSION }}.zip
+          asset_name: release-v${{ env.NEW_VERSION }}.zip
+          asset_content_type: application/zip
