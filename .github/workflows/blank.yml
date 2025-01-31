@@ -98,3 +98,4 @@ jobs:
           gh release create "v${{ env.NEW_VERSION }}" --title "Release v${{ env.NEW_VERSION }}" --notes "Release created from push to main"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
