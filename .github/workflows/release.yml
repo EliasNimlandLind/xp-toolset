@@ -99,15 +99,18 @@ jobs:
       - name: Generate changelog
         id: changelog
         run: |
-          # Get the previous tag (last release) and generate a changelog from it
-          PREVIOUS_TAG=$(git describe --tags --abbrev=0)
-          echo "Previous release tag: $PREVIOUS_TAG"
-
-          # Generate changelog from the last release to the current commit
-          if [ -z "$PREVIOUS_TAG" ]; then
-            # If no previous tag exists (first release), get all commits
+          # Check if there are any tags
+          TAG_COUNT=$(git tag | wc -l)
+          if [ "$TAG_COUNT" -eq 0 ]; then
+            echo "No tags found, generating changelog from all commits"
+            # If no tags exist (first release), generate changelog from all commits
             CHANGELOG=$(git log --oneline)
           else
+            # Get the previous tag (last release) and generate a changelog from it
+            PREVIOUS_TAG=$(git describe --tags --abbrev=0)
+            echo "Previous release tag: $PREVIOUS_TAG"
+
+            # Generate changelog from the last release to the current commit
             CHANGELOG=$(git log $PREVIOUS_TAG..HEAD --oneline)
           fi
           echo "Generated changelog:"
