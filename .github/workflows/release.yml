@@ -126,9 +126,9 @@ jobs:
           git commit -m "Add changelog for v${{ env.NEW_VERSION }}"
           git push
 
-      - name: Zip the scripts folder
+      - name: Zip the distribution folder
         run: |
-          zip -r scripts-${{ env.NEW_VERSION }}.zip scripts/
+          zip -r distribution-${{ env.NEW_VERSION }}.zip distribution/
           echo "Zipped scripts folder to scripts-${{ env.NEW_VERSION }}.zip"
 
       - name: Create GitHub release with zipped scripts
