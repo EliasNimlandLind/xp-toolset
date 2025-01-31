@@ -48,8 +48,10 @@ jobs:
           # Check if commit message contains "major", "minor", or "patch"
           if [[ "$COMMIT_MSG" == *"major"* || "$COMMIT_MSG" == *"BREAKING CHANGE"* ]]; then
             VERSION_UPDATE_TYPE="major"
-          elif [[ "$COMMIT_MSG" == *"minor"* ]]; then
+          elif [[ "$COMMIT_MSG" == *"new feature"* ]]; then  # Custom trigger for minor version update
             VERSION_UPDATE_TYPE="minor"
+          elif [[ "$COMMIT_MSG" == *"patch"* ]]; then
+            VERSION_UPDATE_TYPE="patch"
           fi
 
           echo "Version update type: $VERSION_UPDATE_TYPE"
@@ -94,9 +96,29 @@ jobs:
           git commit -m "Update version to ${{ env.NEW_VERSION }}"
           git push
 
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get the previous tag (last release) and generate a changelog from it
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0)
+          echo "Previous release tag: $PREVIOUS_TAG"
+
+          # Generate changelog from the last release to the current commit
+          if [ -z "$PREVIOUS_TAG" ]; then
+            # If no previous tag exists (first release), get all commits
+            CHANGELOG=$(git log --oneline)
+          else
+            CHANGELOG=$(git log $PREVIOUS_TAG..HEAD --oneline)
+          fi
+          echo "Generated changelog:"
+          echo "$CHANGELOG"
+
+          # Save changelog to an environment variable
+          echo "CHANGELOG=$CHANGELOG" >> $GITHUB_ENV
+
       - name: Create GitHub release
         id: create_release
         run: |
-          gh release create "v${{ env.NEW_VERSION }}" --title "Release v${{ env.NEW_VERSION }}" --notes "Release created from push to main"
+          gh release create "v${{ env.NEW_VERSION }}" --title "Release v${{ env.NEW_VERSION }}" --notes "${{ env.CHANGELOG }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
