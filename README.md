@@ -51,9 +51,3 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 - Extend installers to create all necessary paths if they do not exist.
 - Extend list of user removal scripts.
 - Integrate automatic updates of scripts.
-  - test 2 2
-- test
-  test
-- test test
-  t tt t
-  t
