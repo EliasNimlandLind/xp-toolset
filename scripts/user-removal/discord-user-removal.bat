@@ -1,4 +1,9 @@
 @echo off
 
-cd C:\Users\%USERNAME%\AppData\Roaming\discord\Local Storage
-RMDIR /S /Q leveldb
+taskkill /IM discord.exe /F >nul 2>&1
+
+for /d %%u in (C:\Users\*) do (
+    if exist "%%u\AppData\Roaming\discord\Local Storage\leveldb" (
+        RMDIR /S /Q "%%u\AppData\Roaming\discord\Local Storage\leveldb"
+    )
+)
