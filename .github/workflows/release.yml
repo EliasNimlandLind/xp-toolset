@@ -11,7 +11,7 @@ permissions:
 jobs:
   release:
     name: Release pushed tag
-    runs-on: ubuntu-22.04
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -19,58 +19,54 @@ jobs:
         with:
           fetch-depth: 0 # Ensures full history is available
 
-      - name: Install PowerShell Core (pwsh)
+      - name: Install PowerShell (powershell)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget apt-transport-https software-properties-common
-          sudo wget -q "https://packages.microsoft.com/config/ubuntu/22.04/prod.list" -O /etc/apt/sources.list.d/microsoft-prod.list
-          sudo apt-get update
-          sudo apt-get install -y powershell
+          winget install --id Microsoft.Powershell --source winget --exact
 
       - name: Install ps2exe in PowerShell
-        run: pwsh -Command 'Install-Module -Name ps2exe -Force -Scope CurrentUser'
+        run: powershell -Command 'Install-Module -Name ps2exe -Force -Scope CurrentUser'
 
       - name: Run build.ps1 to create distribution folder
-        run: pwsh ./build.ps1
+        run: powershell -File ./build.ps1
 
       - name: Check distribution folder contents
         run: |
-          if [ -d distribution ]; then
-            echo "Contents of distribution folder:"
-            ls distribution
-          else
-            echo "Distribution folder does not exist!"
-          fi
+          if (Test-Path -Path "distribution") {
+            Write-Host "Contents of distribution folder:"
+            Get-ChildItem -Path "distribution"
+          } else {
+            Write-Host "Distribution folder does not exist!"
+          }
 
       - name: Create ZIP of distribution Folder
         run: |
-          zip -r distribution.zip distribution/*
+          Compress-Archive -Path "distribution\*" -DestinationPath "distribution.zip"
 
       - name: Generate Release Notes
         id: release_notes
         run: |
-          prev_tag=$(git describe --tags --abbrev=0 HEAD~ || echo "v0.0.0")
-          changes=$(git log "$prev_tag"..HEAD --pretty=format:"%s by @%an in %h" --reverse)
-          breaking=""
-          features=""
-          fixes=""
-          others=""
-          while IFS= read -r line; do
-            if echo "$line" | grep -iq "BREAKING CHANGE"; then
-              breaking="$breaking"$'\n'"⚠️ $line"
-            elif echo "$line" | grep -iq "feat:"; then
-              features="$features"$'\n'"- Feature: $line"
-            elif echo "$line" | grep -iq "fix:"; then
-              fixes="$fixes"$'\n'"- Fix: $line"
-            else
-              others="$others"$'\n'"- Other: $line"
-            fi
-          done <<< "$changes"
-          notes="## What's Changed"
-          if [ -n "$fixes" ]; then notes="$notes"$'\n'"$fixes"; fi
-          if [ -n "$features" ]; then notes="$notes"$'\n'"$features"; fi
-          if [ -n "$breaking" ]; then notes="$notes"$'\n'"$breaking"; fi
-          if [ -n "$others" ]; then notes="$notes"$'\n'"$others"; fi
+          $prev_tag = git describe --tags --abbrev=0 HEAD~ || "v0.0.0"
+          $changes = git log "$prev_tag"..HEAD --pretty=format:"%s by @%an in %h" --reverse
+          $breaking = ""
+          $features = ""
+          $fixes = ""
+          $others = ""
+          foreach ($line in $changes) {
+            if ($line -match "BREAKING CHANGE") {
+              $breaking += "`n⚠️ $line"
+            } elseif ($line -match "feat:") {
+              $features += "`n- Feature: $line"
+            } elseif ($line -match "fix:") {
+              $fixes += "`n- Fix: $line"
+            } else {
+              $others += "`n- Other: $line"
+            }
+          }
+          $notes = "## Changelog"
+          if ($fixes) { $notes += "`n$fixes" }
+          if ($features) { $notes += "`n$features" }
+          if ($breaking) { $notes += "`n$breaking" }
+          if ($others) { $notes += "`n$others" }
           echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
           echo "$notes" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
