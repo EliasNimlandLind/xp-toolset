@@ -1,6 +1,6 @@
 ## Changelog
 
-### v0.0.56
+### v0.1.0
 
-942f3e0 Update version to 0.0.56
-faa2897 minor: testing changelog functionality
+e8eda56 Update version to 0.1.0
+1657f2f new feature: build script creates exe files of all installers
