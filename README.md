@@ -61,6 +61,6 @@ Create a release by:
 
 ## To do
 
-- Extend installers to create all necessary paths if they do not exist.
 - Extend list of user removal scripts.
+  - Epic Games
 - Integrate automatic updates of scripts.
