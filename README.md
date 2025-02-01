@@ -46,12 +46,20 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 6. Open _installer-scripts_.
 7. Click on each file seperately.
 
+## How to use the included release workflow
+
+It updates _version.txt_ and follows semantic versioning principles.
+
+### Version Update Table
+
+| Version type | Trigger in commit message        | What it updates                                                          | Example change                                                   |
+| ------------ | -------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| **Major**    | - `major`<br>- `BREAKING CHANGE` | Increments the **major** version, resets **minor** and **patch** to `0`. | Refactoring core components that are not backward compatible.    |
+| **Minor**    | `minor`                          | Increments the **minor** version, resets **patch** to `0`.               | Adding a new feature that does not break backward compatibility. |
+| **Patch**    | `patch`                          | Increments the **patch** version.                                        | Fixing bugs or making minor improvements.                        |
+
 ## TODO
 
 - Extend installers to create all necessary paths if they do not exist.
 - Extend list of user removal scripts.
 - Integrate automatic updates of scripts.
-- test
-  t
-  t
-  tt
