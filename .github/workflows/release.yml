@@ -58,8 +58,7 @@ jobs:
 
       - name: Create ZIP of distribution Folder
         run: |
-          # Create a zip file of the distribution folder
-          zip -r distribution.zip distribution
+          zip -r distribution.zip . -i distribution
 
       - name: Create GitHub Release
         env:
