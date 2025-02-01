@@ -31,19 +31,6 @@ CopyWithOverwrite -sourceDirectory ".\installer-scripts" -destinationDirectory "
 
 $psFiles += Get-ChildItem -Path "$distributionPath/scripts" -Filter "*.ps1" -Recurse
 
-foreach ($file in $psFiles) {
-    $exeFilePath = "$($file.DirectoryName)\$($file.BaseName).exe"
-
-    ps2exe -inputFile $file.FullName -outputFile "$exeFilePath"
-    if (Test-Path -Path $exeFilePath) {
-        Remove-Item -Path $file.FullName -Force
-        Write-Host "Deleted: $($file.FullName)"
-    }
-    else {
-        Write-Host "Conversion failed for: $($file.FullName), skipping deletion."
-    }
-}
-
 Invoke-Expression "ps2exe main-installer.ps1 $distributionPath\main-installer.exe -noConsole"
 
 $zipPath = "$distributionPath.zip"
