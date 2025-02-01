@@ -34,10 +34,6 @@ jobs:
             Write-Host "Distribution folder does not exist!"
           }
 
-      - name: Create ZIP of distribution Folder
-        run: |
-          Compress-Archive -Path "distribution\*" -DestinationPath "distribution.zip"
-
       - name: Generate Release Notes
         id: release_notes
         run: |
