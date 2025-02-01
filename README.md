@@ -71,6 +71,3 @@ Create a release by:
 - test
 - test
 - test
-  test
-  test
-  test
