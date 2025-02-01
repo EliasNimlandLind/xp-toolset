@@ -25,20 +25,23 @@ jobs:
           prev_tag=$(git describe --tags --abbrev=0 HEAD~ || echo "v0.0.0")
 
           # Get commit logs between the previous and current tag
-          changes=$(git log "$prev_tag"..HEAD --pretty=format:"- %s by @%an in %h" --reverse)
+          changes=$(git log "$prev_tag"..HEAD --pretty=format:"%s by @%an in %h" --reverse)
 
           # Categorize commits
           breaking=""
           features=""
           fixes=""
+          others=""
 
           while IFS= read -r line; do
             if echo "$line" | grep -iq "BREAKING CHANGE"; then
               breaking="$breaking"$'\n'"⚠️ $line"
-            elif echo "$line" | grep -iqE "^feat"; then
+            elif echo "$line" | grep -iq "feat:"; then
               features="$features"$'\n'"- Feature: $line"
-            elif echo "$line" | grep -iqE "^fix"; then
+            elif echo "$line" | grep -iq "fix:"; then
               fixes="$fixes"$'\n'"- Fix: $line"
+            else
+              others="$others"$'\n'"- Other: $line"
             fi
           done <<< "$changes"
 
@@ -47,6 +50,7 @@ jobs:
           if [ -n "$fixes" ]; then notes="$notes"$'\n'"$fixes"; fi
           if [ -n "$features" ]; then notes="$notes"$'\n'"$features"; fi
           if [ -n "$breaking" ]; then notes="$notes"$'\n'"$breaking"; fi
+          if [ -n "$others" ]; then notes="$notes"$'\n'"$others"; fi
 
           echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
           echo "$notes" >> $GITHUB_ENV
