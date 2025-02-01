@@ -62,13 +62,9 @@ Create a release by:
 | **Minor**    | `minor`                          | Increments the **minor** version, resets **patch** to `0`.               | Adding a new feature that does not break backward compatibility. |
 | **Patch**    | `patch`                          | Increments the **patch** version.                                        | Fixing bugs or making minor improvements.                        |
 
-## TODO
+## To do
 
 - Extend installers to create all necessary paths if they do not exist.
 - Extend build script to create .exe files based on all installlers.
 - Extend list of user removal scripts.
 - Integrate automatic updates of scripts.
-- test
-- test
-  t- 3
-  t- s
