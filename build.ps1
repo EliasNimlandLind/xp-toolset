@@ -29,9 +29,7 @@ $distributionPath = "distribution"
 CopyWithOverwrite -sourceDirectory "./scripts" -destinationDirectory "$distributionPath/scripts"
 CopyWithOverwrite -sourceDirectory ".\installer-scripts" -destinationDirectory "$distributionPath/installer-scripts"
 
-$psFiles = Get-ChildItem -Path "$distributionPath/installer-scripts" -Filter "*.ps1"
 $psFiles += Get-ChildItem -Path "$distributionPath/scripts" -Filter "*.ps1" -Recurse
-
 
 foreach ($file in $psFiles) {
     $exeFilePath = "$($file.DirectoryName)\$($file.BaseName).exe"

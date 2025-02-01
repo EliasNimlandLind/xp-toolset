@@ -4,23 +4,25 @@ function Invoke-InstallerScripts {
         [string]$Directory
     )
 
-    # Get all .ps1 files in the specified directory
-    $scripts = Get-ChildItem -Path $Directory -Filter *.ps1
+    # Get all .ps1 and .exe files in the specified directory
+    $scripts = Get-ChildItem -Path $Directory -Filter "*.*" | Where-Object { $_.Extension -in (".ps1", ".exe") }
 
     # Initialize progress tracking
     $totalScripts = $scripts.Count
     $currentScriptIndex = 0
 
-    # Loop through each script and run it in a new PowerShell process
+    # Loop through each script and run it in a new process
     foreach ($script in $scripts) {
         try {
-            Write-Progress -Status "Running installer scripts..." `
-                -Activity "Executing: $($script.Name)" `
-                -PercentComplete (($currentScriptIndex / $totalScripts) * 100)
+            Write-Progress -Status "Running installer scripts..." -Activity "Executing: $($script.Name)" -PercentComplete (($currentScriptIndex / $totalScripts) * 100)
             $currentScriptIndex++
 
-            # Start the process and wait until it completes
-            Start-Process powershell -ArgumentList $script.FullName -Wait -NoNewWindow
+            # Handle PowerShell scripts and EXE files differently
+            if ($script.Extension -eq ".ps1") {
+                # For .ps1 files, start a new PowerShell process
+                Start-Process powershell -ArgumentList $script.FullName -Wait -NoNewWindow
+            }
+
             Write-Host "Completed script: $($script.FullName)"
         }
         catch {
