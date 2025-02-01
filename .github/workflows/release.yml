@@ -66,10 +66,10 @@ jobs:
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
+          tag: ${{ github.ref_name}}
         run: |
           gh release create $tag `
           --repo=$env:GITHUB_REPOSITORY `
-          --title=$($tag.TrimStart('v')) `
+          --title=$env:tag.TrimStart('v') `
           --notes=$env:RELEASE_NOTES `
           distribution.zip
