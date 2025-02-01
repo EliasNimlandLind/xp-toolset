@@ -48,7 +48,7 @@ jobs:
           # Check if commit message contains "major", "minor", or "patch"
           if [[ "$COMMIT_MSG" == *"major"* || "$COMMIT_MSG" == *"BREAKING CHANGE"* ]]; then
             VERSION_UPDATE_TYPE="major"
-          elif [[ "$COMMIT_MSG" == *"new feature"* ]]; then  # Custom trigger for minor version update
+          elif [[ "$COMMIT_MSG" == *"minor"* ]]; then  # Custom trigger for minor version update
             VERSION_UPDATE_TYPE="minor"
           elif [[ "$COMMIT_MSG" == *"patch"* ]]; then
             VERSION_UPDATE_TYPE="patch"
