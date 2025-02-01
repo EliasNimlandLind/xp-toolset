@@ -96,36 +96,6 @@ jobs:
           git commit -m "Update version to ${{ env.NEW_VERSION }}"
           git push
 
-      - name: Generate changelog
-        id: changelog
-        run: |
-          # Check if there are any tags
-          TAG_COUNT=$(git tag | wc -l)
-          if [ "$TAG_COUNT" -eq 0 ]; then
-            echo "No tags found, generating changelog from all commits"
-            # If no tags exist (first release), generate changelog from all commits
-            CHANGELOG=$(git log --oneline)
-          else
-            # Get the previous tag (last release) and generate a changelog from it
-            PREVIOUS_TAG=$(git describe --tags --abbrev=0)
-            echo "Previous release tag: $PREVIOUS_TAG"
-
-            # Generate changelog from the last release to the current commit
-            CHANGELOG=$(git log $PREVIOUS_TAG..HEAD --oneline)
-          fi
-          echo "Generated changelog:"
-          echo "$CHANGELOG"
-
-          # Write changelog to a CHANGELOG.md file
-          echo "## Changelog" > CHANGELOG.md
-          echo "" >> CHANGELOG.md
-          echo "### v${{ env.NEW_VERSION }}" >> CHANGELOG.md
-          echo "" >> CHANGELOG.md
-          echo "$CHANGELOG" >> CHANGELOG.md
-          git add CHANGELOG.md
-          git commit -m "Add changelog for v${{ env.NEW_VERSION }}"
-          git push
-
       - name: Zip the distribution folder
         run: |
           zip -r distribution-${{ env.NEW_VERSION }}.zip . -i distribution/*
@@ -140,7 +110,7 @@ jobs:
           # Create GitHub release
           gh release create "v${{ env.NEW_VERSION }}" \
             --title "Release v${{ env.NEW_VERSION }}" \
-            --notes "$(cat CHANGELOG.md)\n\nCommit message: $COMMIT_MSG" \
+            --generate-notes \
             "distribution-${{ env.NEW_VERSION }}.zip"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
