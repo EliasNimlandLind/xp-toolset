@@ -19,10 +19,6 @@ jobs:
         with:
           fetch-depth: 0 # Ensures full history is available
 
-      - name: Install PowerShell (powershell)
-        run: |
-          winget install --id Microsoft.Powershell --source winget --exact
-
       - name: Install ps2exe in PowerShell
         run: powershell -Command 'Install-Module -Name ps2exe -Force -Scope CurrentUser'
 
