@@ -23,7 +23,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget apt-transport-https software-properties-common
-          wget -q "https://packages.microsoft.com/config/ubuntu/22.04/prod.list" -O /etc/apt/sources.list.d/microsoft-prod.list
+          sudo wget -q "https://packages.microsoft.com/config/ubuntu/22.04/prod.list" -O /etc/apt/sources.list.d/microsoft-prod.list
+          sudo apt-get update
           sudo apt-get install -y powershell
 
       - name: Install ps2exe in PowerShell
