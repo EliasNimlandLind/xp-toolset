@@ -30,4 +30,5 @@ $zipPath = "distribution.zip"
 if (Test-Path -Path $zipPath) {
     Remove-Item -Path $zipPath -Force
 }
+
 Compress-Archive -Path distribution -CompressionLevel Optimal -DestinationPath $zipPath
