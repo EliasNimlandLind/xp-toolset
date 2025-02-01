@@ -1,6 +1,8 @@
 Valve.Steam
 EpicGames.EpicGamesLauncher
 XP99VR1BPSBQJ2
+9NF8H0H7WMLT
+Google.Chrome
 RiotGames.LeagueOfLegends.EUW
 RiotGames.Valorant.EU
 RiotGames.LegendsOfRuneterra.Europe
