@@ -68,3 +68,4 @@ Create a release by:
 - Extend build script to create .exe files based on all installlers.
 - Extend list of user removal scripts.
 - Integrate automatic updates of scripts.
+- Test release automation script.
