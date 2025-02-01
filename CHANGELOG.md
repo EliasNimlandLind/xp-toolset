@@ -1,6 +1,6 @@
 ## Changelog
 
-### v0.0.56
+### v0.0.556
 
-942f3e0 Update version to 0.0.56
-faa2897 minor: testing changelog functionality
+dbbe433 Update version to 0.0.556
+75bc4c1 minor
