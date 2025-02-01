@@ -52,10 +52,9 @@ The workflow updates _version.txt_ and _CHANGELOG.md_ according to semantic vers
 
 Create a release by:
 
-1. Add each commit as normal.
-2. Create a commit with commit message including a trigger word, e.g., `minor: <changes to commit>`. Refer to the table below for what they are.
-3. Execute `git push`.
-4. Execute `git pull` to pull the changes.
+1. Create a commit with commit message including a trigger word, e.g., `minor: <changes to commit>`. Refer to the table below for what they are.
+2. Execute `git push`.
+3. Execute `git pull` to pull the changes.
 
 | Version type | Trigger in commit message        | What it updates                                                          | Example change                                                   |
 | ------------ | -------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------- |
