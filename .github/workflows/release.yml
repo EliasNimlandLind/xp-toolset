@@ -24,6 +24,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y powershell
 
+      - name: Install ps2exe in PowerShell
+        run: pwsh -Command 'Install-Module -Name ps2exe -Force -Scope CurrentUser'
+
       - name: Run build.ps1 to create distribution folder
         run: pwsh ./build.ps1
 
