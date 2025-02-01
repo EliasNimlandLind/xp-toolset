@@ -25,3 +25,5 @@ foreach ($script in $scripts) {
         Write-Host "Error running script: $($script.FullName) Error details: $_"
     }
 }
+
+
