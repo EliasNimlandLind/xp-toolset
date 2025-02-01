@@ -1,5 +1,4 @@
 Valve.Steam
-Discord.Discord
 EpicGames.EpicGamesLauncher
 XP99VR1BPSBQJ2
 RiotGames.LeagueOfLegends.EUW
