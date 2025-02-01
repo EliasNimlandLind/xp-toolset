@@ -53,3 +53,4 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 - Integrate automatic updates of scripts.
 - test
   t
+  t
