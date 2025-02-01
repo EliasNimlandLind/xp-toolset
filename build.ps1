@@ -14,6 +14,7 @@ function CopyWithOverwrite {
     # Copy the source to the destination
     Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse
     Write-Host "Copied $sourcePath to $destinationPath"
+
 }
 
 $distributionPath = "distribution"
