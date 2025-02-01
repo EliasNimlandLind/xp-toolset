@@ -48,19 +48,16 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 
 ## The release workflow
 
-The workflow updates _version.txt_ and _CHANGELOG.md_ according to semantic versioning principles.
-
 Create a release by:
 
-1. Create a commit with commit message including a trigger word, e.g., `minor: <changes to commit>`. Refer to the table below for what they are.
-2. Execute `git push`.
-3. Execute `git pull` to pull the changes.
+1. Create and push commits with trigger words to categorize the changes.
+2. Create a release by executing `git tag <tag to use>` and `git tag <tag to use>`.
 
-| Version type | Trigger in commit message        | What it updates                                                          | Example change                                                   |
-| ------------ | -------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| **Major**    | - `major`<br>- `BREAKING CHANGE` | Increments the **major** version, resets **minor** and **patch** to `0`. | Refactoring core components that are not backward compatible.    |
-| **Minor**    | `minor`                          | Increments the **minor** version, resets **patch** to `0`.               | Adding a new feature that does not break backward compatibility. |
-| **Patch**    | `patch`                          | Increments the **patch** version.                                        | Fixing bugs or making minor improvements.                        |
+| Version type | Trigger in commit message | What it updates                                                          | Example change                                                   |
+| ------------ | ------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| **Major**    | `BREAKING CHANGE`         | Increments the **major** version, resets **minor** and **patch** to `0`. | Refactoring core components that are not backward compatible.    |
+| **Minor**    | `feat`                    | Increments the **minor** version, resets **patch** to `0`.               | Adding a new feature that does not break backward compatibility. |
+| **Patch**    | `fix`                     | Increments the **patch** version.                                        | Fixing bugs or making minor improvements.                        |
 
 ## To do
 
