@@ -69,3 +69,4 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="${tag#v}" \
               --notes "$RELEASE_NOTES"
+              distribution.zip
