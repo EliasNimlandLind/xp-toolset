@@ -46,11 +46,16 @@ The scripts found in _installer-scripts_ are used to simplify the install proces
 6. Open _installer-scripts_.
 7. Click on each file seperately.
 
-## How to use the included release workflow
+## The release workflow
 
-It updates _version.txt_ and follows semantic versioning principles.
+The workflow updates _version.txt_ and _CHANGELOG.md_ according to semantic versioning principles.
 
-### Version Update Table
+Create a release by:
+
+1. Add each commit as normal.
+2. Create a commit with commit message including a trigger word, e.g., `minor: <changes to commit>`. Refer to the table below for what they are.
+3. Execute `git push`.
+4. Execute `git pull` to pull the changes.
 
 | Version type | Trigger in commit message        | What it updates                                                          | Example change                                                   |
 | ------------ | -------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------- |
