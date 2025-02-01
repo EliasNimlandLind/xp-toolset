@@ -70,4 +70,3 @@ Create a release by:
 - Integrate automatic updates of scripts.
 - test
 - test
-- test
