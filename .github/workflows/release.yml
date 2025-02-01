@@ -12,27 +12,44 @@ jobs:
   release:
     name: Release pushed tag
     runs-on: ubuntu-22.04
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Ensures full history is available
 
+      - name: Install PowerShell
+        run: |
+          sudo apt-get install -y wget apt-transport-https software-properties-common
+          wget -q "https://packages.microsoft.com/config/ubuntu/20.04/prod.list" -O /etc/apt/sources.list.d/microsoft-prod.list
+          sudo apt-get install -y powershell
+
+      - name: Run build.ps1 to create distribution folder
+        run: pwsh ./build.ps1
+
+      - name: Check distribution folder contents
+        run: |
+          if [ -d distribution ]; then
+            echo "Contents of distribution folder:"
+            ls distribution
+          else
+            echo "Distribution folder does not exist!"
+          fi
+
+      - name: Create ZIP of distribution Folder
+        run: |
+          zip -r distribution.zip distribution/*
+
       - name: Generate Release Notes
         id: release_notes
         run: |
-          # Get previous tag
           prev_tag=$(git describe --tags --abbrev=0 HEAD~ || echo "v0.0.0")
-
-          # Get commit logs between the previous and current tag
           changes=$(git log "$prev_tag"..HEAD --pretty=format:"%s by @%an in %h" --reverse)
-
-          # Categorize commits
           breaking=""
           features=""
           fixes=""
           others=""
-
           while IFS= read -r line; do
             if echo "$line" | grep -iq "BREAKING CHANGE"; then
               breaking="$breaking"$'\n'"⚠️ $line"
@@ -44,21 +61,14 @@ jobs:
               others="$others"$'\n'"- Other: $line"
             fi
           done <<< "$changes"
-
-          # Create formatted release notes
           notes="## What's Changed"
           if [ -n "$fixes" ]; then notes="$notes"$'\n'"$fixes"; fi
           if [ -n "$features" ]; then notes="$notes"$'\n'"$features"; fi
           if [ -n "$breaking" ]; then notes="$notes"$'\n'"$breaking"; fi
           if [ -n "$others" ]; then notes="$notes"$'\n'"$others"; fi
-
           echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
           echo "$notes" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-
-      - name: Create ZIP of distribution Folder
-        run: |
-          zip -r distribution.zip . -i distribution/*
 
       - name: Create GitHub Release
         env:
@@ -68,5 +78,5 @@ jobs:
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \
               --title="${tag#v}" \
-              --notes "$RELEASE_NOTES"
+              --notes "$RELEASE_NOTES" \
               distribution.zip
