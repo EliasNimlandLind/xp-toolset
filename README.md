@@ -62,6 +62,5 @@ Create a release by:
 ## To do
 
 - Extend installers to create all necessary paths if they do not exist.
-- Extend build script to create .exe files based on all installlers.
 - Extend list of user removal scripts.
 - Integrate automatic updates of scripts.

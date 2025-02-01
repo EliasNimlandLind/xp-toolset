@@ -45,7 +45,7 @@ foreach ($file in $files) {
 
 Invoke-Expression "ps2exe main-installer.ps1 $distributionPath\main-installer.exe -noConsole"
 
-$zipPath = "distribution.zip"
+$zipPath = "$distributionPath.zip"
 if (Test-Path -Path $zipPath) {
     Remove-Item -Path $zipPath -Force
 }

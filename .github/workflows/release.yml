@@ -70,6 +70,6 @@ jobs:
         run: |
           gh release create $tag `
           --repo=$env:GITHUB_REPOSITORY `
-          --title=$env:tag.TrimStart('v') `
+          --title=$env:tag `
           --notes=$env:RELEASE_NOTES `
           distribution.zip
