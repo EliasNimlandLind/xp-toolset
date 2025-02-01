@@ -68,8 +68,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
-          gh release create "$tag" \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="${tag#v}" \
-              --notes "$RELEASE_NOTES" \
-              distribution.zip
+          gh release create $tag `
+          --repo=$env:GITHUB_REPOSITORY `
+          --title=$($tag.TrimStart('v')) `
+          --notes=$env:RELEASE_NOTES `
+          distribution.zip
