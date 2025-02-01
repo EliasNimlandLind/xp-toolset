@@ -56,6 +56,11 @@ jobs:
           echo "$notes" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
+      - name: Create ZIP of distribution Folder
+        run: |
+          # Create a zip file of the distribution folder
+          zip -r distribution.zip distribution
+
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
