@@ -1,4 +1,4 @@
-name: Create release
+name: Create Release
 
 on:
   push:
@@ -13,7 +13,46 @@ jobs:
     name: Release pushed tag
     runs-on: ubuntu-22.04
     steps:
-      - name: Create release
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensures full history is available
+
+      - name: Generate Release Notes
+        id: release_notes
+        run: |
+          # Get previous tag
+          prev_tag=$(git describe --tags --abbrev=0 HEAD~ || echo "v0.0.0")
+
+          # Get commit logs between the previous and current tag
+          changes=$(git log "$prev_tag"..HEAD --pretty=format:"- %s by @%an in %h" --reverse)
+
+          # Categorize commits
+          breaking=""
+          features=""
+          fixes=""
+
+          while IFS= read -r line; do
+            if echo "$line" | grep -iq "BREAKING CHANGE"; then
+              breaking="$breaking"$'\n'"⚠️ $line"
+            elif echo "$line" | grep -iqE "^feat"; then
+              features="$features"$'\n'"- Feature: $line"
+            elif echo "$line" | grep -iqE "^fix"; then
+              fixes="$fixes"$'\n'"- Fix: $line"
+            fi
+          done <<< "$changes"
+
+          # Create formatted release notes
+          notes="## What's Changed"
+          if [ -n "$fixes" ]; then notes="$notes"$'\n'"$fixes"; fi
+          if [ -n "$features" ]; then notes="$notes"$'\n'"$features"; fi
+          if [ -n "$breaking" ]; then notes="$notes"$'\n'"$breaking"; fi
+
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "$notes" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
@@ -21,4 +60,4 @@ jobs:
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \
               --title="${tag#v}" \
-              --generate-notes
+              --notes "$RELEASE_NOTES"
