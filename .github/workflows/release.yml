@@ -72,4 +72,4 @@ jobs:
           --repo=$env:GITHUB_REPOSITORY `
           --title=$env:tag `
           --notes=$env:RELEASE_NOTES `
-          distribution.zip
+          "distribution.zip"
